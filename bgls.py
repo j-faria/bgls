@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #================================================================================
 # Copyright (c) 2014 João Faria, Annelies Mortier
 # Distributed under the MIT License.
@@ -5,6 +6,7 @@
 #================================================================================
 
 import numpy as np
+import sys
 
 try:
 	import mpmath  # https://code.google.com/p/mpmath/
@@ -30,7 +32,6 @@ def bgls(t, y, err, plow=0.5, phigh=100, ofac=1):
 
 	bigY = sum(w*y)  # Eq. (10)
 
-	KK = []
 	p = []
 	constants = []
 	exponents = []
@@ -51,16 +52,36 @@ def bgls(t, y, err, plow=0.5, phigh=100, ofac=1):
 		CCh = sum(wcosx*cosx)
 		SSh = sum(wsinx*sinx)
 
-		K = (C*C*SSh + S*S*CCh - W*CCh*SSh)/(2.*CCh*SSh)
-		KK.append(K)
+		if (CCh != 0 and SSh != 0):
+			K = (C*C*SSh + S*S*CCh - W*CCh*SSh)/(2.*CCh*SSh)
+
+			L = (bigY*CCh*SSh - C*YCh*SSh - S*YSh*CCh)/(CCh*SSh)
+
+			M = (YCh*YCh*SSh + YSh*YSh*CCh)/(2.*CCh*SSh)
+
+			constants.append(1./np.sqrt(CCh*SSh*abs(K)))
+
+		elif (CCh == 0):
+			K = (S*S - W*SSh)/(2.*SSh)
+
+			L = (bigY*SSh - S*YSh)/(SSh)
+
+			M = (YSh*YSh)/(2.*SSh)
+
+			constants.append(1./np.sqrt(SSh*abs(K)))
+
+		elif (SSh == 0):
+			K = (C*C - W*CCh)/(2.*CCh)
+
+			L = (bigY*CCh - C*YCh)/(CCh)
+
+			M = (YCh*YCh)/(2.*CCh)
+
+			constants.append(1./np.sqrt(CCh*abs(K)))
+
 		if K > 0:
 			raise RuntimeError('K is positive. This should not happen.')
 
-		L = (bigY*CCh*SSh - C*YCh*SSh - S*YSh*CCh)/(CCh*SSh)
-
-		M = (YCh*YCh*SSh + YSh*YSh*CCh)/(2.*CCh*SSh)
-
-		constants.append(1./np.sqrt(CCh*SSh*abs(K)))
 		exponents.append(M - L*L/(4.*K))
 
 	constants = np.array(constants)
