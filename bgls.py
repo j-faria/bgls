@@ -1,3 +1,9 @@
+#================================================================================
+# Copyright (c) 2014 João Faria, Annelies Mortier
+# Distributed under the MIT License.
+# (See accompanying file LICENSE or copy at http://opensource.org/licenses/MIT)
+#================================================================================
+
 import numpy as np
 
 try:
@@ -10,9 +16,7 @@ except ImportError, e1:
 	finally:
 		raise e1
 
-
 pi = np.pi
-
 
 def bgls(t, y, err, plow=0.5, phigh=100, ofac=1):
 
