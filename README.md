@@ -1,5 +1,8 @@
-A Bayesian formalism for the generalised Lomb-Scargle periodogram
-=================================================================
+A Bayesian formalism for the generalised 
+========================================
+
+Lomb-Scargle periodogram
+=========================
 
 The BGLS tool calculates the Bayesian Generalized Lomb-Scargle periodogram as described in Mortier, Faria et al. (2014). It is written in Python (tested on Python 2.7).
 
