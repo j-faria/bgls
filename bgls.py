@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #================================================================================
-# Copyright (c) 2014 João Faria, Annelies Mortier
+# Copyright (c) 2014-2015 Annelies Mortier, João Faria
 # Distributed under the MIT License.
 # (See accompanying file LICENSE or copy at http://opensource.org/licenses/MIT)
 #================================================================================
@@ -22,8 +22,9 @@ pi = np.pi
 
 def bgls(t, y, err, plow=0.5, phigh=100, ofac=1):
 
-	f = np.linspace(1./phigh, 1./plow, int(100*ofac))
-
+	n_steps = int(ofac*len(t)*(1./plow - 1./phigh))
+	f = np.linspace(1./phigh, 1./plow, n_steps)
+	
 	omegas = 2. * pi * f
 
 	err2 = err * err
